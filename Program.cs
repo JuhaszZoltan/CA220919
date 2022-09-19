@@ -1,4 +1,6 @@
 ﻿char[,] palya = new char[24, 79];
+Random rnd = new();
+
 
 //a palya beolvasasa
 using StreamReader sr = new(@"..\..\..\res\lab.txt");
@@ -81,6 +83,9 @@ while (palya[top, left] != 'O')
             break;
     }
     Console.SetCursorPosition(left, top);
+
+    Console.ForegroundColor = (ConsoleColor)rnd.Next(15);
+
     Console.Write('@');
 }
 Console.Clear();
