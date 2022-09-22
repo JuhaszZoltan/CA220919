@@ -1,10 +1,16 @@
-﻿char[,] palya = new char[24, 79];
+﻿using System.Diagnostics;
+
+char[,] palya = new char[24, 79];
 Random rnd = new();
+
+Stopwatch sw = new Stopwatch();
 
 
 //a palya beolvasasa
 using StreamReader sr = new(@"..\..\..\res\lab.txt");
 int sorIndex = 0;
+
+sw.Start();
 while (!sr.EndOfStream)
 {
     string teljesSor = sr.ReadLine();
@@ -88,7 +94,10 @@ while (palya[top, left] != 'O')
 
     Console.Write('@');
 }
+
+sw.Stop();
 Console.Clear();
 Console.WriteLine("győztél ge!");
+Console.WriteLine($"idő: {sw.Elapsed}");
 
-Console.ReadKey();
+while (Console.ReadKey().Key != ConsoleKey.Escape);
