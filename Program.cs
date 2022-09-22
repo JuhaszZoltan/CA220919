@@ -1,29 +1,27 @@
 ﻿using System.Diagnostics;
 
 char[,] palya = new char[24, 79];
+Console.CursorVisible = false;
+Console.SetWindowSize(79, 25);
+
 Random rnd = new();
-
-Stopwatch sw = new Stopwatch();
-
+Stopwatch sw = new();
 
 //a palya beolvasasa
 using StreamReader sr = new(@"..\..\..\res\lab.txt");
-int sorIndex = 0;
 
-sw.Start();
+int si = 0;
 while (!sr.EndOfStream)
 {
-    string teljesSor = sr.ReadLine();
-    for (int oszlopIndex = 0; oszlopIndex < teljesSor.Length; oszlopIndex++)
+    string ts = sr.ReadLine();
+    for (int oi = 0; oi < ts.Length; oi++)
     {
-        palya[sorIndex, oszlopIndex] = teljesSor[oszlopIndex];
+        palya[si, oi] = ts[oi];
     }
-    sorIndex++;
+    si++;
 }
 
 //a palya kirajzolasa a matrixbol
-Console.CursorVisible = false;
-Console.SetWindowSize(79, 25);
 for (int s = 0; s < palya.GetLength(0); s++)
 {
     for (int o = 0; o < palya.GetLength(1); o++)
@@ -42,17 +40,15 @@ for (int s = 0; s < palya.GetLength(0); s++)
     }
     Console.Write("\n");
 }
-
-int top = 0;
-int left = 0;
-
 Console.ForegroundColor = ConsoleColor.Red;
 Console.BackgroundColor = ConsoleColor.White;
 
+int top = 0;
+int left = 0;
 while (palya[top, left] != 'O')
 {
     var ck = Console.ReadKey().Key;
-
+    if (!sw.IsRunning) sw.Start();
     switch (ck)
     {
         case ConsoleKey.UpArrow:
@@ -89,15 +85,23 @@ while (palya[top, left] != 'O')
             break;
     }
     Console.SetCursorPosition(left, top);
-
-    Console.ForegroundColor = (ConsoleColor)rnd.Next(15);
-
     Console.Write('@');
 }
 
 sw.Stop();
 Console.Clear();
-Console.WriteLine("győztél ge!");
-Console.WriteLine($"idő: {sw.Elapsed}");
+
+Console.BackgroundColor = ConsoleColor.White;
+Console.ForegroundColor = ConsoleColor.Black;
+
+Console.SetCursorPosition(
+    Console.WindowWidth / 2 - 4,
+    Console.WindowHeight / 2);
+Console.WriteLine("győztél!");
+Console.SetCursorPosition(
+    Console.WindowWidth / 2 - 8,
+    Console.WindowHeight / 2 + 1);
+
+Console.WriteLine($"idő: {sw.Elapsed.TotalSeconds:0.000} sec.");
 
 while (Console.ReadKey().Key != ConsoleKey.Escape);
